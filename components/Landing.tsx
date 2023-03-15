@@ -12,7 +12,7 @@ export const Landing = () => {
 				<div></div>
 				<main className='  flex flex-col justify-center items-center space-y-20 min-h-screen  '>
 					<h1 className='text-4xl xl:text-5xl 2xl:text-6xl font-extrabold uppercase super font-Lexend '>
-						UNITE3
+						Reward Hub
 					</h1>
 					<div className='flex flex-col justify-center items-center text-center space-y-2'>
 						<p className='text-transparent bg-clip-text text-xl xl:text-2xl 2xl:text-3xl tracking-tighter font-medium capitalize superdes font-Lexend'>
@@ -29,15 +29,7 @@ export const Landing = () => {
 						{' '}
 						<div>
 						<Connectwallet/>
-						<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
-						<button className={styles.btn} type="button"
-                onClick={()=>{}}>
-                <span className="is-link has-text-weight-bold">
-					ARCANA AUTH
-					{/* <i className="fa fa-github" Style:font-size="48px"></i> */}
-
-                </span>
-            </button>
+						
 						</div>
 					</div>
 					{/* <div>

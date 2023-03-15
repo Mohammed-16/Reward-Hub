@@ -1,10 +1,19 @@
 import {
+	Connection,
+	clusterApiUrl,
+	Keypair,
 	PublicKey,
 	LAMPORTS_PER_SOL,
+	PublicKeyInitData,
 } from '@solana/web3.js'
+import { create, CID, IPFSHTTPClient } from 'ipfs-http-client'
+import Arweave from 'arweave'
 import { CreateNftOutput, Metaplex, MetaplexFile, Nft } from '@metaplex-foundation/js'
+import { cpSync } from 'fs'
 import * as IPFS from 'ipfs-core';
-
+import { encode } from 'punycode'
+import { buffer } from 'stream/consumers'
+import { Web3Storage } from 'web3.storage'
 
 async function airdropSol(wallet, connection) {
 	const airdropSignature = await connection.requestAirdrop(
@@ -15,6 +24,7 @@ async function airdropSol(wallet, connection) {
 	console.log('sols airdropped', rx)
 }
 function getAccessToken() {
+    // console.log(process.env.NEXT_PUBLIC_WEB3STORAGE_TOKEN);
     return process.env.WEB3STORAGE_TOKEN_APIKEY;
   }
 
@@ -26,6 +36,27 @@ async function uploadImage(dataSrc) {
 		const Link = gateway+cid;
     	console.log("Link ",Link);
 	return Link;
+	// return gateway+cid
+	// let ipfs: IPFSHTTPClient | undefined
+	// try {
+	// 	ipfs = create({
+	// 		url: 'https://ipfs.infura.io:5001/api/v0',
+	// 	})
+	// } catch (error) {
+	// 	console.error('IPFS error ', error)
+	// 	ipfs = undefined
+	// }
+
+	// const result = await (ipfs as IPFSHTTPClient).add(dataSrc)
+	// const cid = result.cid
+	// const path = result.path
+	// const url = `https://ipfs.infura.io/ipfs/${path}`
+	// 	console.log("Link ", url)
+	// return url
+
+	// const accessToken = getAccessToken() as string;
+    // // console.log("accessToken", accessToken);
+    // return new Web3Storage({ token: accessToken });
 
 }	
 
@@ -79,6 +110,7 @@ async function creteNfts(metadata: any, title: string, cps: number, git: string 
 		});
 		transactions.push(tx);
 		await tx.run();
+		
 	}
 }
 
