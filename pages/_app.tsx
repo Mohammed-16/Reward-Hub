@@ -59,7 +59,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 	return (
 		<Provider store={store}>
 		<WagmiConfig client={wagmiClient}>
-			<ConnectKitProvider>
+			<ConnectKitProvider theme="midnight">
 				<Component {...pageProps} />
 			</ConnectKitProvider>
 		</WagmiConfig>
