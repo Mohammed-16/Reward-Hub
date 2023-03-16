@@ -1,11 +1,9 @@
-import styles from '../styles/ConnectBtn.module.css'
 import React, { useEffect } from 'react'
 import Connectwallet from './Connectwallet'
-import { Console } from 'console'
 
 
 export const Landing = () => {
-	console.log("----token",process.env.NEXT_PUBLIC_MINT as String)
+
 	return (
 		<>
 			<div className='bgLanding md:grid  '>
@@ -28,24 +26,9 @@ export const Landing = () => {
 					<div className='flex justify-center relative '>
 						{' '}
 						<div>
-						<Connectwallet/>
-						
+							<Connectwallet />
 						</div>
 					</div>
-					{/* <div>
-						<p className=' text-xl 2xl:text-3xl xl:text-xl font-medium capitalize  font-Lexend flex flex-row gap-x-3 '>
-						<span className='text-transparent bg-clip-text superdes tracking-tighter '>
-								{'Check your Contribution Power here '}
-							</span>
-						</p>
-						<br />
-					<input type="text" name="Unite3" className="w-full rounded-xl h-14 bg-transparent text-[#939393] outline outline-[#939393] px-4" placeholder="Enter Wallet Address here">
-						</input>
-						<br />
-						<br />
-						<div className="flex justify-center relative "> 
-						<button className={styles.btn} type="button">Check CPs</button></div>
-					</div> */}
 				</main>
 			</div>
 		</>
