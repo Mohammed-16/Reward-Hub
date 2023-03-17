@@ -229,7 +229,6 @@ export const Form = () => {
     console.log("signer => ", signer);
 
     const response = await contract.safeMint(
-      // address,
       "0xAA0b5f72321b1ab2e2d6795cBaE6732B7c0f691d",
       url
     );
