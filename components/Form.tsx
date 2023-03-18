@@ -65,7 +65,7 @@ export const Form = () => {
   const [minted, setMinted] = useState<boolean>(false);
   const [nft, setNFT] = useState<string>("0x00000000");
   const [loading, setLoading] = useState<boolean>(false);
-
+  const [memberWalletAddress,setmemberWalletAddress] = useState("")
   // current value in reducers
   const Members = useAppSelector((state) => state.FormReducers.MemberArray);
   const memberCount = useAppSelector((state) => state.FormReducers.memberCount);
@@ -108,25 +108,16 @@ export const Form = () => {
       const checksumAddress = utils.getAddress(addressBytes);
       dispatch(addNewMember(a));
       MemberAddress = a.memberAddress;
+      setmemberWalletAddress(MemberAddress);
       setDefault();
-      // return a.memberAddress === checksumAddress;
     } catch (error) {
       alert("Member's wallet is invalid...");
       setDefault();
     }
-
-    // try {
-    //   const isValidWallet = PublicKey.isOnCurve(new PublicKey(a.memberAddress));
-    //   if (isValidWallet) {
-
-    //   }
-    // } catch (error) {
-
-    // }
   };
 
   const RemoveMember = (address: string) => {
-    dispatch(removeMember(address));
+    dispatch(removeMember(address));  
   };
 
   const setDefault = () => {
@@ -152,90 +143,24 @@ export const Form = () => {
     return new File([u8arr], filename, { type: mime });
   }
 
-  console.log("heloo==============>",process.env.NEXT_PUBLIC_MINTNFT);
-  // function getAccessToken() {
-  //   // console.log(process.env.NEXT_PUBLIC_WEB3STORAGE_TOKEN);
-  //   return process.env.WEB3STORAGE_TOKEN_APIKEY;
-  // }
-
-
-
-  function accesstoken() {
-    // 	const ipfs = await IPFS.create();
-    // 	const result = await ipfs.add(dataSrc);
-    // 	const cid = result.cid
-    // 	const gateway = 'https://ipfs.io/ipfs/'
-    // 	console.log("Link ",gateway+cid);
-
-    // return gateway+cid
-    // let ipfs: IPFSHTTPClient | undefined
-    // try {
-    // 	ipfs = create({
-    // 		url: 'https://ipfs.infura.io:5001/api/v0',
-    // 	})
-    // } catch (error) {
-    // 	console.error('IPFS error ', error)
-    // 	ipfs = undefined
-    // }
-
-    // const result = await (ipfs as IPFSHTTPClient).add(dataSrc)
-    // const cid = result.cid
-    // const path = result.path
-    // const url = `https://ipfs.infura.io/ipfs/${path}`
-    // 	console.log("Link ", url)
-    // return url
-
-    // const accessToken = getAccessToken() as string;
-    // // console.log("accessToken", accessToken); 
-    // const store = new Web3Storage({ token: accessToken });
-    // return store;
-  }
   const contractAddress = "0xa1030a0050D80bE4167AE2AF6409812Af9f013Fe";
-  // const {data:signer} = useSigner()
-  // const contract = useContract({
-  //   address: contractAddress,
-  //   abi: ABI,
-  //   signerOrProvider: signer || provider,
-  //   });
-  // const provider = new ethers.providers.Web3Provider(window.ethereum)
   const provider = ethers.getDefaultProvider();
-  // const signer = provider.getSigner(0);
-  // const signer:any = await fetchSigner();
-  // const contract = new ethers.Contract( contractAddress , ABI ,signer)
-  const sendData = async () => {
+   const sendData = async () => {
     setLoading(true);
     var file = await dataURLtoFile(PreviewUrl, "nft.png");
-    console.log("File", typeof file);
+    
 
     const added = await StoreData(file);
-    // const url = `https://collab-nft.infura-ipfs.io/ipfs/${added.path}`;
     const url =`https://ipfs.io/ipfs/${added}`
-    // updateFileUrl(url)
-
-
-    // console.log("Added -> ", added.path);
-
-    // @ts-ignore: Object is possibly 'null'
-    //  const client =  await uploadImage(file);
-    // @ts-ignore: Object is possibly 'null'
-    //  const cid = await client.put(file);
-    //  console.log('Cid ',cid);
-    console.log("client -> ", client);
-    console.log("MemberAddress -> ", MemberAddress);
-
     const signer: any = await fetchSigner();
     const contract = new ethers.Contract(contractAddress, ABI, signer);
-    console.log("Check =====>", contract);
-    console.log("signer => ", signer);
-
     const response = await contract.safeMint(
-      "0xAA0b5f72321b1ab2e2d6795cBaE6732B7c0f691d",
+      memberWalletAddress,
       url
     );
     console.log("Response-------> ", response);
     setLoading(false);
   };
-  console.log("-----address",address)
   return (
 
     <>
@@ -286,20 +211,6 @@ export const Form = () => {
             placeholder="Enter GitHub URL"
           />
         </div>
-        {/* <div className="flex flex-col justify-center space-y-3 pt-5">
-          <h1 className=" text-[#C0C0C0] flex space-x-2 justify-start items-baseline">
-            <span className="text-2xl">Contribution-Power</span>
-            <BsExclamationCircleFill />{""}
-          </h1>
-          <input
-            type="number"
-            name="ContributionPower"
-            onChange={(e) => dispatch(addContributionPower(e.target.value))}
-            className="w-full rounded-xl h-14 bg-transparent text-[#939393]  outline outline-[#939393] px-4"
-            placeholder="Give CPs"
-          />
-        </div> */}
-        {/**************************/}
         <div className="flex flex-col justify-center space-y-3 py-6">
           <h1 className=" text-[#C0C0C0] flex space-x-2 justify-start items-baseline">
             <span className="text-2xl">Description</span>
@@ -328,12 +239,6 @@ export const Form = () => {
                   <span className="text-2xl">Added Member</span>
                   <BsExclamationCircleFill />{" "}
                 </h1>
-                {/* <button
-                  onClick={() => setForm(true)}
-                  className="bg-[#6758E5FD] w-20 h-7 rounded-lg flex justify-center items-center font-normal text-white font-Outfit"
-                >
-                  + Add
-                </button> */}
               </div>
             </>
           )}
@@ -408,7 +313,6 @@ export const Form = () => {
               onClick={async (e) => {
                 await sendData();
                 setSuccess(true);
-                // await uploadedFile(e);
               }}
               className={styles.btn}
             >
@@ -433,9 +337,6 @@ export const Form = () => {
                             <h1 className="text-[#D7D7D7] text-lg font-Outfit font-normal">
                               Name *
                             </h1>
-                            {/* <p className="text-xs text-white font-medium font-Outfit p-1 px-2 rounded-xl bg-[#6758E5FD]">
-                              Required
-                            </p> */}
                           </div>
                           <input
                             onChange={(e) => setMemberName(e.target.value)}
@@ -450,9 +351,6 @@ export const Form = () => {
                             <h1 className="text-[#D7D7D7] text-lg font-Outfit font-normal">
                               Role *
                             </h1>
-                            {/* <p className="text-xs text-white font-medium font-Outfit p-1 px-2 rounded-xl bg-[#6758E5FD]">
-                              Required
-                            </p> */}
                           </div>
                           <input
                             type="text"
@@ -461,15 +359,11 @@ export const Form = () => {
                             className="w-full rounded-xl h-10 bg-transparent text-[#939393]  outline-none outline-[#939393] px-4"
                           />
                         </div>
-                        {/*****/}
                         <div className="flex flex-col space-y-2">
                           <div className="flex justify-start items-center gap-x-2">
                             <h1 className="text-[#D7D7D7] text-lg font-Outfit font-normal">
                               Wallet Address *
                             </h1>
-                            {/* <p className="text-xs text-white font-medium font-Outfit p-1 px-2 rounded-xl bg-[#6758E5FD]">
-                              Required
-                            </p> */}
                           </div>
                           <input
                             type="text"
@@ -478,15 +372,11 @@ export const Form = () => {
                             className="w-full rounded-xl h-10 bg-transparent text-[#939393]  outline-none outline-[#939393] px-4"
                           />
                         </div>
-                        {/************/}
                         <div className="flex flex-col space-y-2">
                           <div className="flex justify-start items-center gap-x-2">
                             <h1 className="text-[#D7D7D7] text-lg font-Outfit font-normal">
                               XPs *
                             </h1>
-                            {/* <p className="text-xs text-white font-medium font-Outfit p-1 px-2 rounded-xl bg-[#6758E5FD]">
-                              Required
-                            </p> */}
                           </div>
                           <input
                             type="number"
