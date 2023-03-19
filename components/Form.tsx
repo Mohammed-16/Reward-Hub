@@ -168,7 +168,7 @@ export const Form = () => {
     console.log('File', typeof file)
 
     const added = await client.add(file)
-    const url = `https://collab-nft.infura-ipfs.io/ipfs/${added.path}`
+    const url = `https://rewardhub.infura-ipfs.io/ipfs/${added.path}`
     // updateFileUrl(url)
 
     console.log('Added -> ', added.path)
@@ -191,7 +191,8 @@ export const Form = () => {
     }
     const result = await client.add(JSON.stringify(metadata))
     console.log('result -> ', result.path)
-    const finalLink = `https://collab-nft.infura-ipfs.io/ipfs/${result.path}`
+    const finalLink = `https://rewardhub.infura-ipfs.io/ipfs/${result.path}`
+console.log("Link----->",finalLink);
 
     const signer: any = await fetchSigner()
 
