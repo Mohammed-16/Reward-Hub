@@ -145,21 +145,63 @@ export const Form = () => {
 
   const contractAddress = "0xa1030a0050D80bE4167AE2AF6409812Af9f013Fe";
   const provider = ethers.getDefaultProvider();
-   const sendData = async () => {
-    setLoading(true);
-    var file = await dataURLtoFile(PreviewUrl, "nft.png");
+  //  const sendData = async () => {
+  //   setLoading(true);
+  //   var file = await dataURLtoFile(PreviewUrl, "nft.png");
     
 
-    const added = await StoreData(file);
-    const url =`https://ipfs.io/ipfs/${added}`
-    const signer: any = await fetchSigner();
-    const contract = new ethers.Contract(contractAddress, ABI, signer);
-    const response = await contract.safeMint(
-      memberWalletAddress,
-      url
-    );
-    console.log("Response-------> ", response);
-    setLoading(false);
+  //   const added = await StoreData(file);
+  //   const url =`https://ipfs.io/ipfs/${added}`
+  //   const signer: any = await fetchSigner();
+  //   const contract = new ethers.Contract(memberWalletAddress, ABI, signer);
+  //   const response = await contract.safeMint(
+  //     contractAddress,
+  //     url
+  //   );
+  //   console.log("Response-------> ", response);
+  //   setLoading(false);
+  // };
+
+  const sendData = async () => {
+    setLoading(true)
+    var file = await dataURLtoFile(PreviewUrl, 'nft.png')
+    console.log('File', typeof file)
+
+    const added = await client.add(file)
+    const url = `https://collab-nft.infura-ipfs.io/ipfs/${added.path}`
+    // updateFileUrl(url)
+
+    console.log('Added -> ', added.path)
+
+    const metadata = {
+      description: 'Contribution Power',
+      external_url: 'https://openseacreatures.io/3',
+      image: url,
+      name: 'CP',
+      attributes: [
+        {
+          trait_type: 'Lead',
+          value: memberWalletAddress,
+        },
+        {
+          trait_type: 'Role',
+          value: role,
+        },
+      ],
+    }
+    const result = await client.add(JSON.stringify(metadata))
+    console.log('result -> ', result.path)
+    const finalLink = `https://collab-nft.infura-ipfs.io/ipfs/${result.path}`
+
+    const signer: any = await fetchSigner()
+
+    const contract = new ethers.Contract(memberWalletAddress, ABI, signer)
+    // console.log("Check =====>",contract);
+    console.log('signer => ', signer)
+
+    const response = await contract.safeMint(memberWalletAddress, finalLink)
+    console.log('Response ', response)
+    setLoading(false)
   };
   return (
 
