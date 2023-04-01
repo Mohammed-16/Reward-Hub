@@ -9,7 +9,7 @@ contract RewardHub is ERC721 {
 
     constructor() ERC721("ImageNFT", "INFT") {}
 
-    // Pass connected Address and the TokenURI
+    // Address of the Project Owner to be passed with the TokenURI
     function mint(address to, string memory tokenURI) public returns (uint256) {
         uint256 newTokenId = _tokenIdTracker;
         _safeMint(to, newTokenId);
@@ -28,6 +28,7 @@ contract RewardHub is ERC721 {
         return _tokenURIs[tokenId];
     }
 
+    // Address of the Contributor to be passed with TokenID
     function transferNFT(address _to, uint256 _tokenId) public {
         require(ownerOf(_tokenId) == msg.sender, "ImageNFT: You do not own this NFT.");
         safeTransferFrom(msg.sender, _to, _tokenId);
