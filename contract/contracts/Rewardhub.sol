@@ -9,6 +9,7 @@ contract RewardHub is ERC721 {
 
     constructor() ERC721("ImageNFT", "INFT") {}
 
+    // Pass connected Address and the TokenURI
     function mint(address to, string memory tokenURI) public returns (uint256) {
         uint256 newTokenId = _tokenIdTracker;
         _safeMint(to, newTokenId);
